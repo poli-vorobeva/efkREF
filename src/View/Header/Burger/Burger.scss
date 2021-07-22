@@ -1,0 +1,66 @@
+.burger__wrapper:hover + .aside__wrapper{
+  left: 0px;
+}
+.burger__wrapper:hover{
+  z-index: 10;
+}
+
+.burger__wrapper {
+  overflow: hidden;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+}
+
+.burger__wrapper input {
+  display: flex;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 1;
+}
+
+.burger__wrapper span{
+  width: 35px;
+  height: 6px;
+  margin-bottom: 8px;
+  background: #7f8fa6;
+  border-radius: 4px;
+  -webkit-transition: all .5s cubic-bezier(.08,.81,.87,.71);
+  -moz-transition: all .5s cubic-bezier(.08,.81,.87,.71);
+  -ms-transition: all .5s cubic-bezier(.08,.81,.87,.71);
+  -o-transition: all .5s cubic-bezier(.08,.81,.87,.71);
+  transition: all .5s cubic-bezier(.08,.81,.87,.71);
+}
+
+.burger__span1 {
+  transform-origin: 2px 0px;
+}
+
+.burger__span3 {
+  transform-origin: bottom right;
+}
+
+.burger__wrapper input:checked ~ .burger__span1 {
+  background-color: #0c2461;
+  transform: rotate(45deg) translate(6px);
+}
+.burger__wrapper input:checked ~ .burger__span2 {
+  background-color: #0c2461;
+  transform: rotate(495deg) translate(2px);
+}
+.burger__wrapper input:checked ~ .burger__span3 {
+  background-color: #0c2461;
+  transform: rotate(45deg);
+  opacity: 0;
+}
+.header__wrapper .burger__wrapper input:checked  .aside__wrapper{
+  left:0
+}

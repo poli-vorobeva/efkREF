@@ -1,0 +1,150 @@
+.card__wrapper {
+  perspective: 600px;
+}
+.card__wrapper > .flipped {
+  transform: rotateY(180deg) translateX(-100%);
+  transform-origin: left;
+}
+.flipped ~ .blockCard__div{
+  display: block;
+}
+.card__wrapper ~ .blockCard__div{
+  display: none;
+}
+.card__content {
+  width: 20vw;
+  height: 20vw;
+
+  max-width: 150px;
+  max-height: 150px;
+  background-color: #8c6f72;
+  color:white;
+  transform-style: preserve-3d;
+  transform-origin: right;
+  transition: all 500ms ease;
+  img{
+    width: 100%;
+    height: 100%;
+  }
+}
+.correct{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,2,0.5)
+
+}
+.card__wrapper{
+  width: 20vw;
+  height: 20vw;
+  position: relative;
+  border-radius: 20px 20px 0 0 ;
+}
+.blockCard__div{
+  width: 20vw;
+  height: 20vw;
+  top: 0;
+  position: absolute;
+  display: none;
+}
+.hideBlockDiv{
+  display: none;
+}
+.card__content > div {
+  backface-visibility: hidden;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-between;
+}
+.card__blockDiv{
+  width: 88%;
+  height: 88%;
+  position: absolute;
+  top: 0;
+  background-color: rgba(160, 5, 245, 0.33);
+}
+.card__front,
+.card__back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-shadow: 5px 6px 10px rgba(0, 0, 0, 0.2);
+}
+
+.card__back {
+  transform: rotateY(180deg);
+}
+
+.card__back-bg,
+.card__front-bg {
+  width: 100%;
+  height: 100%;
+}
+
+.card__back-gradient {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.card__back,
+.card__front {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  &_text{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    bottom: 0;
+    margin: 10px;
+    position: absolute;
+    background: cadetblue;
+    width: 100%;
+    letter-spacing: 1px;
+    font-size: 10px;
+
+    img{
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+.card__front{
+  .card__front_text{
+   // mix-blend-mode: luminosity;
+  }
+}
+.gameBoard__cards_wrapper{
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+@media(max-width: 1000px){
+  .card__back_text, .card__front_text{
+    font-size: 12px;
+  }
+}
+@media(max-width: 800px){
+  .card__back_text, .card__front_text{
+    font-size: 7px;
+  }
+  .card__back_text img, .card__front_text img {
+    width: 15px;
+    height: 15px;
+  }
+}
+@media (max-width: 600px) {
+  .card__wrapper {
+    width: 31vw;
+  }
+  .card__blockDiv {
+    width: 65%;
+    height: 100%;
+  }
+}

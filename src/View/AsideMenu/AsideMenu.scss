@@ -1,0 +1,27 @@
+.aside__wrapper{
+  width: 150px;
+  height: 100vh;
+  background-color: #1547f9;
+  position: fixed;
+  left: -150px;
+  transition: all ease-out 500ms;
+  z-index: 10;
+  ul{
+    padding: 100px 10px;
+    li{
+      list-style: none;
+      text-transform: uppercase;
+      letter-spacing: 0.3rem;
+      margin-bottom: 20px;
+      cursor: pointer;
+      transition: all ease 500ms;
+    }
+  }
+}
+.aside__active{
+  //left: 0;
+}
+.aside__active_item{
+  color: yellow;
+  text-decoration: underline;
+}
