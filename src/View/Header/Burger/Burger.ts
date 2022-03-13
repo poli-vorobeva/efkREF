@@ -1,29 +1,31 @@
 import { f } from '../../../../Util';
 import './Burger.scss';
+import Control from "../../../common/Control";
 
 export interface IBurger{
   render():HTMLElement
 }
-export function Burger():HTMLElement {
-  const span1:HTMLElement = f.create('span', 'burger__span1').end();
-  const span2:HTMLElement = f.create('span', 'burger__span2').end();
-  const span3:HTMLElement = f.create('span', 'burger__span3').end();
-  const input:HTMLElement = f.create('input').end();
-  input.setAttribute('type', 'checkbox');
-  const burger:HTMLElement = f.create('div', 'burger__wrapper')
-    .append(input).append(span1).append(span2)
-    .append(span3)
-    .end();
-
-input.addEventListener('click',()=>{
-  if((input as HTMLInputElement).checked==true){
-    const aside=document.querySelector('.aside__wrapper');
-    (aside as HTMLElement).style.left='0'
-  }else{
-    console.log('false')
-    const aside=document.querySelector('.aside__wrapper');
-    (aside as HTMLElement).style.left='-150px'
+export class Burger extends Control{
+  private input:Control<HTMLInputElement>
+  constructor(parentNode:HTMLElement){
+    super(parentNode,'div', 'burger__wrapper')
+    this.input = new Control(this.node,'input')
+    this.input.node.setAttribute('type', 'checkbox');
+    const span1 = new Control(this.node,'span', 'burger__span1')
+    const span2 = new Control(this.node,'span', 'burger__span2')
+    const span3 = new Control(this.node,'span', 'burger__span3')
+    this.input.node.addEventListener('click',()=>{
+      if(this.input.node.checked==true){
+        const aside=document.querySelector('.aside__wrapper');
+        (aside as HTMLElement).style.left='0'
+      }else{
+        console.log('false')
+        const aside=document.querySelector('.aside__wrapper');
+        (aside as HTMLElement).style.left='-150px'
+      }
+    })
   }
-})
-  return burger;
+  getInput(){
+    return this.input.node
+  }
 }

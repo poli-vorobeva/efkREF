@@ -1,6 +1,6 @@
 
-const BASE_URL='https://englishserver.herokuapp.com/'
-
+//const BASE_URL='https://englishserver.herokuapp.com/'
+const BASE_URL='http://localhost:5000/'
 export async function getCategories (){
   const res= await fetch(BASE_URL+'api/categories',{
     method: 'GET',
@@ -8,10 +8,15 @@ export async function getCategories (){
       'Access-Control-Allow-Origin':'*',
     }
   })
+ // console.log("RES", await res.json())
   return res
 }
+// export async function sendRequest=({url:})=>{
+//
+// }
 export async function authorization(registerMode:string,userObj:{[key:string]:string}):Promise<any>{
-  const response = await fetch(BASE_URL+`api/users/${registerMode==='register'?'signup':'login'}`,{
+  const response = await fetch(
+    BASE_URL+`api/users/${registerMode==='register'?'signup':'login'}`,{
     method: 'POST',
     headers:{
       'Access-Control-Allow-Origin': '*',
@@ -23,7 +28,6 @@ return response
 };
 
 export async function createCategory(userObj:{[key:string]:string|string[]}):Promise<any>{
-  console.log('^^',userObj)
   const response = await fetch(BASE_URL+`api/categories`,{
     method: 'POST',
     headers:{
@@ -32,8 +36,7 @@ export async function createCategory(userObj:{[key:string]:string|string[]}):Pro
     },
     body: JSON.stringify(userObj)
   })
- console.log('CReate',await response)
-
+  console.log(response,'^^^^')
   return response
 };
 export async function addTranslate(translObj:{[key:string]:string}):Promise<any>{
@@ -72,7 +75,6 @@ export async function addImages(image:{[key:string]:string}):Promise<any>{
   return response
 }
 export async function getImages(word:string) {
-  console.log('!11111',word)
   const response = await fetch(BASE_URL+`api/images/${word}`,{
     method: 'GET',
     headers:{

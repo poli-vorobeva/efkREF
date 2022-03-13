@@ -11,59 +11,72 @@ import { IApp } from '../interfaces';
 import {Footer} from "./Footer/Footer";
 import {asyncLocalStorage} from "../canstants";
 import { superObject} from "../storage/imagesStorage";
+import Control from "../common/Control";
+import {CategoriesBoard} from "./MainContent/GameBoard/CategoriesBoard/CaregoriesBoard";
 // import {createStore} from "../redux/createStore";
+type CategoriesItem={
+  name:string,
+  title:string,
+  images:string[]
+}
+export type Categories=CategoriesItem[]
+export type PreloadData={
+  categories:Categories,
+  images:{img:{base64:string,word:string}}[]
+}
+export class App extends Control {
+  store: any;
+  mainContent: MainContent;
+  aside: AsideMenu;
+  // header:HTMLElement;
 
-export class App implements IApp {
-  header:HTMLElement;
-
-  aside:HTMLElement;
+  // aside:HTMLElement;
 
   //mainContent:HTMLElement;
 
-  store:StoreType;
+//  store:StoreType;
+//  aside: AsideMenu;
+//  mainContent: MainContent;
 
-  pageWrapperClass:string;
+  // pageWrapperClass:string;
 
-  play:IPlay;
+  // play:IPlay;
 
-  parentElement:HTMLElement;
-footer:HTMLElement
-  constructor() {
+//  parentElement:HTMLElement;
+//footer:HTMLElement
+  constructor(parentNode: HTMLElement) {
+    super(parentNode, 'main', 'page__wrapper')
+
+  }
+
+  render(preloadData:PreloadData) {
     this.store = createStore(rootReducer, initialState);
-    this.pageWrapperClass = 'page__wrapper';
-    this.parentElement = document.querySelector('body') as HTMLElement;
-    this.play = new Play(this.store, this.parentElement);
-    this.aside = new AsideMenu(this.store,this.play).render();
-    this.header = new Header(this.aside, this.store, this).render();
-    //this.mainContent = new MainContent(this.parentElement.querySelector(`.${this.pageWrapperClass}`) as HTMLElement,
-    //  this.store, this.play).render();
-    this.footer= Footer()
+    //this.pageWrapperClass = ;
+    //  const app = new Control(this.node,)
+    const header = new Header(this.node, this.store)
+    // this.parentElement = document.querySelector('body') as HTMLElement;
+    //  this.play = new Play(this.store, this.parentElement);
+    this.aside = new AsideMenu(this.node, header.getBurger());
+    this.mainContent = new MainContent(this.node, this.store,preloadData)
+    this.mainContent.categoryClick=(str:string)=>{
+      console.log("strMain",str)
+    }
+    // this.footer= Footer()
   }
 
-  async render():Promise<HTMLElement> {
-  localStorage.clear()
-    const app = f.create('main', this.pageWrapperClass)
-      .append(this.header).append(this.aside)
-      .append(await new MainContent(this.parentElement.querySelector(`.${this.pageWrapperClass}`) as HTMLElement,
-        this.store, this.play).render())
-      .append(this.footer)
-      .end();
-    return app;
-  }
+  // render():void {
+  //  localStorage.clear()
+  //  }
 
-  async init():Promise<HTMLElement> {
-    const content = this.render();
-    Object.keys(superObject).forEach(el=>{
+  init(): void {
+    //  const content = this.render();
+    Object.keys(superObject).forEach(el => {
 
-  //console.log(JSON.stringify(superObject[el]))
-  if (!localStorage.getItem(el)){
-    localStorage.setItem(el,JSON.stringify(superObject[el]))
-  }
-  //asyncLocalStorage.setItem(el,JSON.stringify(superObject[el]))
-  // console.log('#',asyncLocalStorage.getItem(el))
-  //asyncLocalStorage.setItem('DataObject', ...superObject)
-})
+      if (!localStorage.getItem(el)) {
+        localStorage.setItem(el, JSON.stringify(superObject[el]))
+      }
+    })
 
-    return content;
+    //  return content;
   }
 }

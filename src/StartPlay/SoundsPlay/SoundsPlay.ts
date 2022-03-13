@@ -1,7 +1,11 @@
 import { f } from '../../../Util';
+import Control from "../../common/Control";
 
-export function SoundsPlay(option:string):HTMLElement {
-  const audio = f.create('audio')
-    .attribute('src', `./assets/audio/${option}.mp3`).attribute('autoplay', 'true').end();
-  return audio;
+export class SoundsPlay extends Control{
+  constructor(parentNode:HTMLElement,option:string){
+    super(parentNode,'audio')
+    console.log(option,'@@#')
+      this.node.setAttribute('src', `./assets/audio/${option}.mp3`)
+        this.node.setAttribute('autoplay', 'true')
+  }
 }

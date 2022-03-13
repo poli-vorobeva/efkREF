@@ -1,35 +1,34 @@
-import { f } from '../../../../Util';
+import {f} from '../../../../Util';
 import './Checkbox.scss';
-import { StoreType } from '../../../types';
-import { changeMode } from '../../../redux/actions';
+import {StoreType} from '../../../types';
+import {changeMode} from '../../../redux/actions';
+import Control from "../../../common/Control";
 
 interface ICheckbox {
-  render():HTMLElement
+  render(): HTMLElement
 }
-export class Checkbox implements ICheckbox {
-  store:StoreType;
 
-  change:(e:Event)=>void;
+export class Checkbox extends Control{
+ // store: StoreType;
 
-  constructor(store:StoreType) {
-    this.store = store;
-    this.change = function (e:Event) {
-      const train :boolean = (e.target as HTMLInputElement)?.checked;
-      this.store.dispatch(changeMode(train ? 'game' : 'train'));
+  change: (e: Event) => void;
+
+  constructor(parentNode:HTMLElement) {
+    super(parentNode,'div','header__checkbox')
+   // this.store = store;
+    this.change = function (e: Event) {
+      const train: boolean = (e.target as HTMLInputElement)?.checked;
+      //this.store.dispatch(changeMode(train ? 'game' : 'train'));
     };
-  }
-
-  render():HTMLElement {
-    const input:HTMLElement = f.create('input', 'header__checkbox').attribute('type', 'checkbox').end();
-    const spanGame:HTMLElement = f.create('span', 'game').attribute('data-mode', 'game').text('Game').end();
-    const spanTrain :HTMLElement = f.create('span', 'train').attribute('data-mode', 'train').text('Train').end();
-    const inputText :HTMLElement = f.create('div', 'text').append(spanGame).append(spanTrain).end();
-    const switcher :HTMLElement = f.create('div', 'switcher__circle').end();
-    const switcherWrapper :HTMLElement = f.create('div', 'switcher__wrapper').append(inputText).append(switcher).end();
-    const checkboxWrapper :HTMLElement = f.create('div', 'header__checkbox').append(input).append(switcherWrapper).end();
-
-    input.addEventListener('change', this.change.bind(this));
-
-    return checkboxWrapper;
+    const input = new Control(this.node, 'input', 'header__checkbox')
+    input.node.setAttribute('type', 'checkbox')
+    const switcherWrapper = new Control(this.node, 'div', 'switcher__wrapper')
+    const inputText = new Control(switcherWrapper.node, 'div', 'text')
+    const switcher = new Control(switcherWrapper.node, 'div', 'switcher__circle')
+    const spanGame = new Control(inputText.node, 'span', 'game', 'Game')
+    spanGame.node.setAttribute('data-mode', 'game')
+    const spanTrain = new Control(inputText.node, 'span', 'train', 'Train')
+    spanTrain.node.setAttribute('data-mode', 'train')
+    input.node.addEventListener('change', this.change.bind(this));
   }
 }
