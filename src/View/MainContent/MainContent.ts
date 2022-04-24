@@ -12,8 +12,6 @@ export interface IMainContent {
 }
 
 export class MainContent extends Control {
-
-
   store: StoreType;
   className: string;
   private categories: Categories;
@@ -23,6 +21,7 @@ export class MainContent extends Control {
   private content: CategoriesBoard;
   onFinishRound:(mistakes:number)=>void
   onShowCheckbox:()=>void
+  onShowAdminButton:()=>void
   private preloadData: PreloadData;
   constructor(parentNode: HTMLElement, store: StoreType, preloadData: PreloadData) {
     super(parentNode, 'main', 'main__container')
@@ -60,6 +59,9 @@ export class MainContent extends Control {
   }
   onRegisterForm() {
     const register = new RegisterForm(this.node)
+    register.onShowAdminButton=()=>{
+      this.onShowAdminButton()
+    }
   }
   // render(): {
   //

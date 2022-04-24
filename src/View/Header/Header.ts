@@ -10,6 +10,7 @@ import {playDelay} from "../../canstants";
 import Control from "../../common/Control";
 
 export class Header extends Control {
+
   store: StoreType;
   burger: Burger;
   onStartGame: (button: HTMLElement) => void
@@ -21,6 +22,7 @@ export class Header extends Control {
   startButtonClicked: boolean;
   onHome:()=>void
   onRegisterForm:()=>void
+  adminButton: Control<HTMLElement>;
   constructor(parentNode: HTMLElement, store: StoreType) {
     super(parentNode, 'section', 'header__wrapper')
     this.store = store
@@ -34,8 +36,8 @@ export class Header extends Control {
       this.onHome()
     })
     //времееная кнопка
-    const adminButton = new Control(this.node, 'button', 'adminButton', 'admin')
-    adminButton.node.addEventListener('click', () => {
+    this.adminButton = new Control(this.node, 'button', 'adminButton', 'admin')
+    this.adminButton.node.addEventListener('click', () => {
         this.store.dispatch(openCategory('ADMIN'))
     })
     const registerButton = new Control(this.node, 'button', 'header__register', 'Register/Login')
@@ -61,6 +63,9 @@ export class Header extends Control {
 
     this.startButtonClicked = false
     //  this.showStartButton()
+  }
+  showAdminButton() {
+    this.adminButton.node.style.display='block'
   }
 defaultView(){
     this.checkbox?.destroy()

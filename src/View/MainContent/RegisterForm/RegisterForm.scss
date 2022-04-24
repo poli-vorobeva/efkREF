@@ -16,6 +16,7 @@
   width: 40vw;
   max-width: 300px;
   min-width: 150px;
+  position: relative;
   button{
     border: none;
     outline: none;
@@ -27,6 +28,11 @@
     color: blueviolet;
     background: #f4dad1;
     box-shadow: 0px 0px 10px 1px #3c1362;
+    transition: all ease 500ms;
+  }
+  button:hover{
+    transform: scale(0.97);
+    box-shadow: 0px 0px 12px 5px #3c1362;
   }
 }
 
@@ -47,6 +53,19 @@
     letter-spacing: 2px;
     color: #c7525294;
   }
+ :-webkit-autofill {
+    -webkit-box-shadow:0 0 0 50px white inset; /* Change the color to your own background color */
+    -webkit-text-fill-color: #333;
+  }
+
+ :-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 50px white inset;/*your box-shadow*/
+    -webkit-text-fill-color: #333;
+  }
+
+  //::-internal-input-suggested{
+  //
+  //}
 }
 .register-close{
   cursor: pointer;

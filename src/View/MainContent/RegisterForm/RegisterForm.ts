@@ -5,26 +5,30 @@ import {RegisterController} from "../../../Controllers/RegisterController";
 import Control from "../../../common/Control";
 import {RegisterFormValidate} from "./RegisterFormValidate";
 
+export type userRegister = { name: string, password: string, email: string }
+
 export class RegisterForm extends Control {
   store: StoreType;
   mode: string
   private formRegisterName: Control<HTMLInputElement>;
   private formRegisterEmail: Control<HTMLInputElement>;
   private formRegisterPassword: Control<HTMLInputElement>;
-  private name: string;
-  private password: string;
-  private email: string;
   private buttonSubmit: Control<HTMLElement>;
   private formValidate: RegisterFormValidate;
-
+  private isValid: boolean[];
+  private alertDiv: Control<HTMLElement>;
+  private userObject: userRegister;
+  onShowAdminButton:()=>void;
   constructor(parentNode: HTMLElement) {
     super(parentNode, 'section', 'register')
     //this.store=store
     this.mode = ''
-    this.name = ''
-    this.password = ''
-    this.email = ''
-    const wrapper= new Control(this.node,'div','registerWrapper')
+    this.userObject = {
+      name: '',
+      password: '',
+      email: ''
+    }
+    const wrapper = new Control(this.node, 'div', 'registerWrapper')
     const buttonRegister = new Control(wrapper.node, 'button', 'button__register', 'Register')
     buttonRegister.node.onclick = () => this.registerMode('register')
 
@@ -32,38 +36,37 @@ export class RegisterForm extends Control {
     buttonLogin.node.onclick = () => this.registerMode('login')
     this.formValidate = new RegisterFormValidate()
     const form = new Control(wrapper.node, 'form', 'register__form')
+    form.node.setAttribute('autocomplete', "off")
     const formRegister = new Control(form.node, 'form', 'form__register')
     this.formRegisterName = new Control(formRegister.node, 'input')
-    this.formRegisterName.node.setAttribute('type', 'text')
+    this.inputAttributes(this.formRegisterName.node,{type: 'text',placeholder: 'YourName'})
     this.formRegisterName.node.oninput = (e) => {
-      this.name = (e.target as HTMLInputElement).value
-      this.submitButtonView()
-      console.log(this.formValidate.validate('name',this.name))
+      this.onInput('name', this.userObject.name, e.target as HTMLInputElement)
     }
-    this.formRegisterName.node.setAttribute('placeholder', 'YourName')
     this.formRegisterEmail = new Control(formRegister.node, 'input')
-    this.formRegisterEmail.node.setAttribute('type', 'email')
-    this.formRegisterEmail.node.setAttribute('placeholder', 'Email')
+    this.inputAttributes(this.formRegisterEmail.node, {type: 'email', autocomplete: "false", placeholder: 'Email'})
     this.formRegisterEmail.node.oninput = (e) => {
-      this.email = (e.target as HTMLInputElement).value
-      this.submitButtonView()
-      console.log(this.formValidate.validate('email',this.email))
+      this.onInput('email', this.userObject.email, e.target as HTMLInputElement)
     }
     this.formRegisterPassword = new Control(formRegister.node, 'input')
-    this.formRegisterPassword.node.setAttribute('type', 'password')
-    this.formRegisterPassword.node.setAttribute('placeholder', 'Password')
+    this.inputAttributes(this.formRegisterPassword.node,{type: 'password',placeholder: 'Password'})
     this.formRegisterPassword.node.oninput = (e) => {
-      this.password = (e.target as HTMLInputElement).value
-      this.submitButtonView()
-      console.log(this.formValidate.validate('password',this.password))
+      this.onInput('password', this.userObject.password, e.target as HTMLInputElement)
     }
     this.buttonSubmit = new Control(form.node, 'button', 'register__submit', 'Ready')
     this.buttonSubmit.node.addEventListener('click', (e) => {
       e.preventDefault()
-      // console.log((e.target as HTMLElement).closest('form'))
-      //RegisterController(this.store,this.mode,(e.target as HTMLElement).closest('form') as HTMLElement)
+      const authData = RegisterController(this.userObject, this.mode)
+      authData
+        .then((d) => {
+          this.destroy()
+          this.onShowAdminButton()
+          console.log("****", d.data)})
+        .catch((er) => console.log("ERRRR", er))
+       // .finally(() => console.log("Fin"))
     })
     const closeBtn = new Control(form.node, 'span', 'register-close', 'x')
+    closeBtn.node.onclick = () => this.destroy()
   }
 
   registerMode(mode: string) {
@@ -74,10 +77,32 @@ export class RegisterForm extends Control {
   }
 
   submitButtonView() {
-    if ((this.mode === 'register' && this.password && this.email && this.name) || (this.password && this.email)) {
+   if ((this.mode === 'register' && this.userObject.password && this.userObject.email && this.userObject.name)
+      || (this.userObject.password && this.userObject.email)) {
       this.buttonSubmit.node.style.display = 'block'
     } else {
       this.buttonSubmit.node.style.display = 'none'
     }
+  }
+
+  private onInput(field: string, value: string, ev: HTMLInputElement) {
+    this.userObject[field as keyof userRegister] = ev.value
+    this.submitButtonView()
+    this.validateOnInput(field, value)
+  }
+
+  private validateOnInput(field: string, value: string) {
+    if (!this.formValidate.validate(field, value)) {
+      if(this.alertDiv)return
+      this.alertDiv = new Control(this.node, 'div', 'registerAlert', 'NOOOOOOOOO')
+    } else {
+      this.alertDiv?.destroy()
+    }
+  }
+
+  private inputAttributes(input: HTMLInputElement, param: Record<string, string>) {
+    Object.entries(param).forEach(par => {
+      input.setAttribute(par[0], par[1])
+    })
   }
 }

@@ -1,27 +1,17 @@
 import {authorization, getCategories} from "../storage/serverRequests";
 import {StoreType} from "../types";
 import {authorized} from "../redux/actions";
+import {userRegister} from "../View/MainContent/RegisterForm/RegisterForm";
 
-export async function RegisterController(store:StoreType,mode:string,form:HTMLElement) {
-console.log(mode)
-const name =(form.querySelector('input[type=text]') as HTMLInputElement)?.value
-const password =(form.querySelector('input[type=password]') as HTMLInputElement)?.value
-const email =(form.querySelector('input[type=email]') as HTMLInputElement)?.value
+export async function RegisterController(userObject:userRegister,mode:string) {
 
-  //console.log(name,email,password)
-  //отправляем запрос
-  let userObj={}
-  if(mode==='register'){
-    userObj={name,password,email}
-  }else{
-    userObj={password,email}
-  }
-
-   const data= await authorization(mode,userObj)
+  const data= await authorization(mode,userObject)
    const responseJson=await data.json()
     localStorage.setItem('token',await responseJson.token)
     if(responseJson.status==='success'){
-      store.dispatch(authorized())
-      console.log(store.getState())
+      return responseJson
+      //store.dispatch(authorized())
+      //console.log(store.getState())
     }
+    return false
 }

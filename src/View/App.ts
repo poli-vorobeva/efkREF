@@ -81,6 +81,9 @@ export class App extends Control {
 
   drawMainContent() {
     this.mainContent = new MainContent(this.node, this.store, this.preloadData)
+    this.mainContent.onShowAdminButton=()=>{
+      this.header.showAdminButton()
+    }
     this.mainContent.onShowCheckbox = () => {
       this.header.showCheckbox()
     }
