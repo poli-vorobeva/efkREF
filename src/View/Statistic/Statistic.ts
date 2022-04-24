@@ -1,7 +1,7 @@
 import './Statistic.scss';
 import { f, IHelper } from '../../../Util';
 import {categoriesStorage, superObject, translateImages} from '../../storage/imagesStorage';
-import {IPlay} from "../../StartPlay/Play";
+import {IPlay} from "../../StartPlay/GameController";
 import {StoreType} from "../../types";
 
 // div с категорией->div-title  - div-> data

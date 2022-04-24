@@ -1,31 +1,49 @@
-import { f } from '../../../../Util';
+import {f} from '../../../../Util';
 import './Burger.scss';
 import Control from "../../../common/Control";
 
-export interface IBurger{
-  render():HTMLElement
+export interface IBurger {
+  render(): HTMLElement
 }
-export class Burger extends Control{
-  private input:Control<HTMLInputElement>
-  constructor(parentNode:HTMLElement){
-    super(parentNode,'div', 'burger__wrapper')
-    this.input = new Control(this.node,'input')
+
+export class Burger extends Control {
+
+  private input: Control<HTMLInputElement>
+  onAsideStyle: (value: string) => void
+
+  constructor(parentNode: HTMLElement) {
+    super(parentNode, 'div', 'burger__wrapper')
+    this.input = new Control(this.node, 'input')
     this.input.node.setAttribute('type', 'checkbox');
-    const span1 = new Control(this.node,'span', 'burger__span1')
-    const span2 = new Control(this.node,'span', 'burger__span2')
-    const span3 = new Control(this.node,'span', 'burger__span3')
-    this.input.node.addEventListener('click',()=>{
-      if(this.input.node.checked==true){
-        const aside=document.querySelector('.aside__wrapper');
-        (aside as HTMLElement).style.left='0'
-      }else{
-        console.log('false')
-        const aside=document.querySelector('.aside__wrapper');
-        (aside as HTMLElement).style.left='-150px'
-      }
-    })
+    const span1 = new Control(this.node, 'span', 'burger__span1')
+    const span2 = new Control(this.node, 'span', 'burger__span2')
+    const span3 = new Control(this.node, 'span', 'burger__span3')
+    this.input.node.onclick = () => this.clickBurger()
   }
-  getInput(){
+
+  emitChange() {
+    this.input.node.checked = !this.input.node.checked;
+    this.input.node.dispatchEvent(new Event('change'))
+    this.clickBurger()
+  }
+
+  clickBurger() {
+    if (this.input.node.checked == true) {
+      this.onAsideStyle('show')
+    } else {
+      this.onAsideStyle('hide')
+    }
+  }
+
+  getInput() {
     return this.input.node
+  }
+
+  hide() {
+    this.node.style.display = 'none'
+  }
+
+  show() {
+    this.node.style.display = 'block'
   }
 }

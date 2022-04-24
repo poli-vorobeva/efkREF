@@ -1,4 +1,4 @@
-import { IPlay } from './StartPlay/Play';
+import { IPlay } from './StartPlay/GameController';
 
 
 export interface IApp {

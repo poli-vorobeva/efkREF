@@ -2,42 +2,81 @@ import './RegisterForm.scss'
 import {StoreType} from "../../../types";
 import {f} from "../../../../Util";
 import {RegisterController} from "../../../Controllers/RegisterController";
-export class RegisterForm{
-  store:StoreType;
-  mode:string
-  constructor(store:StoreType){
-    this.store=store
-    this.mode=''
-  }
-  render():HTMLElement{
-    const formRegisterName=f.create('input').attribute('type','text').attribute('placeholder','YourName').end()
-    const formRegisterEmail=f.create('input').attribute('type','email').attribute('placeholder','Email').end()
-    const formRegisterPassword=f.create('input').attribute('type','password').attribute('placeholder','Password').end()
-    const formRegister=f.create('form','form__register').append(formRegisterName).append(formRegisterEmail).append(formRegisterPassword).end()
-    const buttonSubmit=f.create('button','register__submit').text('Ready').end()
-    buttonSubmit.addEventListener('click',(e)=>{
-      e.preventDefault()
-     // console.log((e.target as HTMLElement).closest('form'))
-      RegisterController(this.store,this.mode,(e.target as HTMLElement).closest('form') as HTMLElement)
-    })
-    const form= f.create('form','register__form').append(formRegister).append(buttonSubmit).end()
-    const buttonRegister= f.create('button','button__register').text('Register').end()
-    buttonRegister.addEventListener('click',()=>{
-      this.mode='register'
-      formRegisterName.style.opacity='1'
-      formRegisterPassword.style.opacity='1'
-      formRegisterEmail.style.opacity='1'
+import Control from "../../../common/Control";
+import {RegisterFormValidate} from "./RegisterFormValidate";
 
+export class RegisterForm extends Control {
+  store: StoreType;
+  mode: string
+  private formRegisterName: Control<HTMLInputElement>;
+  private formRegisterEmail: Control<HTMLInputElement>;
+  private formRegisterPassword: Control<HTMLInputElement>;
+  private name: string;
+  private password: string;
+  private email: string;
+  private buttonSubmit: Control<HTMLElement>;
+  private formValidate: RegisterFormValidate;
+
+  constructor(parentNode: HTMLElement) {
+    super(parentNode, 'section', 'register')
+    //this.store=store
+    this.mode = ''
+    this.name = ''
+    this.password = ''
+    this.email = ''
+    const buttonRegister = new Control(this.node, 'button', 'button__register', 'Register')
+    buttonRegister.node.onclick = () => this.registerMode('register')
+
+    const buttonLogin = new Control(this.node, 'button', 'button__login', 'LogIn')
+    buttonLogin.node.onclick = () => this.registerMode('login')
+    this.formValidate = new RegisterFormValidate()
+    const form = new Control(this.node, 'form', 'register__form')
+    const formRegister = new Control(form.node, 'form', 'form__register')
+    this.formRegisterName = new Control(formRegister.node, 'input')
+    this.formRegisterName.node.setAttribute('type', 'text')
+    this.formRegisterName.node.oninput = (e) => {
+      this.name = (e.target as HTMLInputElement).value
+      this.submitButtonView()
+      console.log(this.formValidate.validate('name',this.name))
+    }
+    this.formRegisterName.node.setAttribute('placeholder', 'YourName')
+    this.formRegisterEmail = new Control(formRegister.node, 'input')
+    this.formRegisterEmail.node.setAttribute('type', 'email')
+    this.formRegisterEmail.node.setAttribute('placeholder', 'Email')
+    this.formRegisterEmail.node.oninput = (e) => {
+      this.email = (e.target as HTMLInputElement).value
+      this.submitButtonView()
+      console.log(this.formValidate.validate('email',this.email))
+    }
+    this.formRegisterPassword = new Control(formRegister.node, 'input')
+    this.formRegisterPassword.node.setAttribute('type', 'password')
+    this.formRegisterPassword.node.setAttribute('placeholder', 'Password')
+    this.formRegisterPassword.node.oninput = (e) => {
+      this.password = (e.target as HTMLInputElement).value
+      this.submitButtonView()
+      console.log(this.formValidate.validate('password',this.password))
+    }
+    this.buttonSubmit = new Control(form.node, 'button', 'register__submit', 'Ready')
+    this.buttonSubmit.node.addEventListener('click', (e) => {
+      e.preventDefault()
+      // console.log((e.target as HTMLElement).closest('form'))
+      //RegisterController(this.store,this.mode,(e.target as HTMLElement).closest('form') as HTMLElement)
     })
-    const buttonLogin=f.create('button','button__login').text('LogIn').end()
-    buttonLogin.addEventListener('click',()=>{
-      this.mode='login'
-      formRegisterName.style.opacity='0'
-      formRegisterPassword.style.opacity='1'
-      formRegisterEmail.style.opacity='1'
-    })
-    const registerWrapper= f.create('section','register')
-      .append(buttonRegister).append(buttonLogin).append(form).end()
-    return  registerWrapper
+    const closeBtn = new Control(form.node, 'span', 'register-close', 'x')
+  }
+
+  registerMode(mode: string) {
+    this.mode = mode
+    this.formRegisterName.node.style.opacity = mode === 'login' ? '0' : '1'
+    this.formRegisterPassword.node.style.opacity = '1'
+    this.formRegisterEmail.node.style.opacity = '1'
+  }
+
+  submitButtonView() {
+    if ((this.mode === 'register' && this.password && this.email && this.name) || (this.password && this.email)) {
+      this.buttonSubmit.node.style.display = 'block'
+    } else {
+      this.buttonSubmit.node.style.display = 'none'
+    }
   }
 }

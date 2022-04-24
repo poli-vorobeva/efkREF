@@ -5,6 +5,7 @@
   position: absolute;
   right: 10px;
   border-radius: 30px;
+  box-shadow: inset 1px 1px 10px 10px #5356b4;
   input{
     width: 100%;
     height: 100%;
@@ -35,10 +36,11 @@
   height: 100%;
 }
 .switcher__circle{
-  width: 50%;
+  width: 48%;
   background-color: rgb(254, 196, 251);
+  box-shadow: inset 1px 1px 10px 10px #cc9fc7;
   border-radius: 30px;
-  transition: all ease 1000ms;
+  transition: all cubic-bezier(1,-0.05,.7,1.16) 500ms;
   position: absolute;
   left: 0;
   top: 0;

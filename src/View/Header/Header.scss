@@ -22,6 +22,7 @@
   background-color: lemonchiffon;
   color: cadetblue;
   text-transform: uppercase;
+  //display:none
 }
 .header__button_statistic{
   position: absolute;
@@ -50,6 +51,6 @@
   z-index: 51;
 }
 .header__register{
-  position: relative;
+  position: absolute;
   right: 50%;
 }

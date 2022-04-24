@@ -4,10 +4,18 @@ import Control from "./common/Control";
 import {getCategories, getImages} from "./storage/serverRequests";
 
 
+type categoryListResponse={
+  images: string[];
+    id: string;
+    name: string;
+    title: string;
+}
+type IResponse={categories:categoryListResponse[]}
 
 const preload=async ()=>{
   const cats = await getCategories()
-  const categoryResponse=await cats.json()
+  const categoryResponse:IResponse=await cats.json()
+  console.log('###',categoryResponse)
   const firstImages = await categoryResponse.categories.map((e)=>e.images[0])
   async function asBase(item:string) {
     return await getImages(item);

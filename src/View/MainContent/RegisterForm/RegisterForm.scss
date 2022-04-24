@@ -1,5 +1,23 @@
+.register{
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgb(235 194 235 / 88%);
+  padding: 30vw;
+  display: flex;
+  flex-flow: column nowrap;
+}
+
 .register__form{
   input{
     opacity: 0;
   }
+}
+.register-close{
+  cursor: pointer;
+}
+.register__submit{
+  display: none;
 }
