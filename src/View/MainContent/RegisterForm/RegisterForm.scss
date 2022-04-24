@@ -5,18 +5,56 @@
   top: 0;
   left: 0;
   background: rgb(235 194 235 / 88%);
-  padding: 30vw;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.registerWrapper{
   display: flex;
   flex-flow: column nowrap;
+  width: 40vw;
+  max-width: 300px;
+  min-width: 150px;
+  button{
+    border: none;
+    outline: none;
+    margin: 5px 0;
+    line-height: 30px;
+    letter-spacing: 3px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    color: blueviolet;
+    background: #f4dad1;
+    box-shadow: 0px 0px 10px 1px #3c1362;
+  }
 }
 
 .register__form{
   input{
     opacity: 0;
+    width: 100%;
+    border: none;
+    line-height: 30px;
+    margin: 5px 0;
+    outline: none;
+    border-radius: 20px;
+    color: blueviolet;
+    box-shadow: 0px 0px 10px 1px #3c1362;
+  }
+  ::-webkit-input-placeholder{
+    padding: 15px;
+    letter-spacing: 2px;
+    color: #c7525294;
   }
 }
 .register-close{
   cursor: pointer;
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  color: white;
+  font-size: 1.5rem;
 }
 .register__submit{
   display: none;

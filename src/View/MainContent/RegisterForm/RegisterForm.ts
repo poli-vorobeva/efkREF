@@ -24,13 +24,14 @@ export class RegisterForm extends Control {
     this.name = ''
     this.password = ''
     this.email = ''
-    const buttonRegister = new Control(this.node, 'button', 'button__register', 'Register')
+    const wrapper= new Control(this.node,'div','registerWrapper')
+    const buttonRegister = new Control(wrapper.node, 'button', 'button__register', 'Register')
     buttonRegister.node.onclick = () => this.registerMode('register')
 
-    const buttonLogin = new Control(this.node, 'button', 'button__login', 'LogIn')
+    const buttonLogin = new Control(wrapper.node, 'button', 'button__login', 'LogIn')
     buttonLogin.node.onclick = () => this.registerMode('login')
     this.formValidate = new RegisterFormValidate()
-    const form = new Control(this.node, 'form', 'register__form')
+    const form = new Control(wrapper.node, 'form', 'register__form')
     const formRegister = new Control(form.node, 'form', 'form__register')
     this.formRegisterName = new Control(formRegister.node, 'input')
     this.formRegisterName.node.setAttribute('type', 'text')
